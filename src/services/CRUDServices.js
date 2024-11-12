@@ -34,6 +34,55 @@ const CRUDServices = {
       }
     });
   },
+
+  getUserInfoById: (userId) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const user = await db.User.findOne({
+          where: {
+            id: userId,
+          },
+          raw: true,
+        });
+
+        if (user) resolve(user);
+        else resolve({});
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
+  updateUserData: async (userData) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const user = db.User.findOne({
+          where: { id: userData.id },
+        });
+
+        if (user) {
+          await db.User.update(
+            {
+              firstName: userData.firstName,
+              lastName: userData.lastName,
+              address: userData.address,
+            },
+            {
+              where: { id: userData.id },
+            }
+          );
+
+          const allUsers = await db.User.findAll();
+
+          resolve(allUsers);
+        } else {
+          resolve("user does not exist");
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
 };
 
 const hashUserPassword = (password) => {

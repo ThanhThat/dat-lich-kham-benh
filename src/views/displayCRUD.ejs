@@ -29,6 +29,7 @@
             <th scope="col">Address</th>
             <th scope="col">Phone number</th>
             <th scope="col">Gender</th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -41,6 +42,12 @@
             <td><%= user.address %></td>
             <td><%= user.phoneNumber %></td>
             <td><%= user.gender %></td>
+            <td>
+              <a href="/edit-crud?id=<%= user.id %>" class="btn btn-success"
+                >Edit</a
+              >
+              <a href="" class="btn btn-danger">Delete</a>
+            </td>
           </tr>
           <% }) %>
         </tbody>
