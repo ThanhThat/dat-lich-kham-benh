@@ -23,6 +23,17 @@ const CRUDServices = {
       }
     });
   },
+
+  getAllUser: () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const allUser = await db.User.findAll();
+        resolve(allUser);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
 };
 
 const hashUserPassword = (password) => {
