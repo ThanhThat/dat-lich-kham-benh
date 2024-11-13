@@ -83,6 +83,24 @@ const CRUDServices = {
       }
     });
   },
+
+  deleteUserById: (userId) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const user = await db.User.findOne({
+          where: {
+            id: userId,
+          },
+        });
+
+        if (user) await user.destroy();
+
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
 };
 
 const hashUserPassword = (password) => {
