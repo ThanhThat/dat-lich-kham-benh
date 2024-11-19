@@ -4,9 +4,18 @@ import dotenv from "dotenv";
 import configViewEngine from "./config/viewEngine";
 import initWebRoutes from "./route/web";
 import connectDB from "./config/connectDB";
+import cors from "cors";
 
 dotenv.config();
 const app = express();
+
+const corsOptions = {
+  origin: process.env.URL_ORIGIN,
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 
 // config app
 app.use(bodyParser.json());

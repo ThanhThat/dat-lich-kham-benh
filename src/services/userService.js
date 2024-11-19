@@ -1,5 +1,5 @@
 import db from "../models/index";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 const userService = {
   handleUserLogin: (email, password) => {
@@ -41,6 +41,33 @@ const userService = {
           userData.errorMessage = `Your's Email isn't exist in your system. Please try other email!`;
         }
         resolve(userData);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
+  getAllUsers: (userId) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let users = [];
+        if (userId === "ALL") {
+          users = await db.User.findAll({
+            attributes: {
+              exclude: ["password"],
+            },
+          });
+          console.log(users);
+        }
+        if (userId && userId !== "ALL") {
+          users = await db.User.findOne({
+            where: { id: userId },
+            attributes: {
+              exclude: ["password"],
+            },
+          });
+        }
+        resolve(users);
       } catch (error) {
         reject(error);
       }

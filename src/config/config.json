@@ -4,7 +4,10 @@
     "password": null,
     "database": "dat_lich_kham_benh",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "query": { "raw": true },
+    "timezone": "+07:00",
+    "timestamp": true
   },
   "test": {
     "username": "root",
