@@ -20,7 +20,7 @@ const userController = {
   },
 
   handleGetAllUsers: async (req, res) => {
-    const id = req.body.id;
+    const id = req.query.id;
 
     if (!id) {
       return res.status(200).json({
@@ -36,6 +36,32 @@ const userController = {
       errorMessage: "OK",
       users,
     });
+  },
+
+  handleCreateNewUser: async (req, res) => {
+    const message = await userService.createNewUser(req.body);
+    console.log(message);
+    return res.status(200).json(message);
+  },
+
+  handleEditUser: async (req, res) => {
+    const data = req.body;
+    const message = await userService.updateUserData(data);
+
+    return res.status(200).json(message);
+  },
+
+  handleDeleteUser: async (req, res) => {
+    if (!req.body.id) {
+      return res.status(200).json({
+        errorCode: 1,
+        errorMessage: "Missing required parameters!",
+      });
+    }
+
+    const message = await userService.deleteUser(req.body.id);
+
+    return res.status(200).json(message);
   },
 };
 

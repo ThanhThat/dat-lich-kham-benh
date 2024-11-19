@@ -1,5 +1,6 @@
 import db from "../models/index";
 import bcrypt from "bcryptjs";
+const salt = bcrypt.genSaltSync(10);
 
 const userService = {
   handleUserLogin: (email, password) => {
@@ -73,6 +74,103 @@ const userService = {
       }
     });
   },
+
+  createNewUser: (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // Check email is exist ???
+        const check = await checkUserEmail(data.email);
+        if (check === true) {
+          resolve({
+            errorCode: 1,
+            message: "Your email is already in used. Please try another email!",
+          });
+        }
+        const hashPasswordFromBcrypt = await hashUserPassword(data.password);
+        await db.User.create({
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          password: hashPasswordFromBcrypt,
+          address: data.address,
+          phoneNumber: data.phoneNumber,
+          gender: data.gender === 1 ? true : false,
+          roleId: data.role,
+        });
+        resolve({
+          errorCode: 0,
+          message: "OK",
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
+  deleteUser: (userId) => {
+    return new Promise(async (resolve, reject) => {
+      const user = await db.User.findOne({
+        where: { id: userId },
+      });
+
+      if (!user)
+        resolve({
+          errorCode: 2,
+          errorMessage: `The user isn't exist!`,
+        });
+
+      await db.User.destroy({
+        where: { id: userId },
+      });
+
+      resolve({
+        errorCode: 0,
+        message: "Deleted",
+      });
+    });
+  },
+
+  updateUserData: (userData) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!userData.id) {
+          resolve({
+            errorCode: 2,
+            errorMessage: "Missing required parameters!",
+          });
+        }
+
+        const user = await db.User.findOne({
+          where: { id: userData.id },
+        });
+
+        if (user) {
+          await db.User.update(
+            {
+              firstName: userData.firstName,
+              lastName: userData.lastName,
+              address: userData.address,
+            },
+            {
+              where: { id: userData.id },
+            }
+          );
+
+          resolve({
+            errorCode: 0,
+            message: "Updated",
+          });
+        } else {
+          resolve({
+            errorCode: 1,
+            errorMessage: `User's not found!`,
+          });
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
 };
 
 const compareUserPassword = (password) => {
@@ -95,6 +193,17 @@ const checkUserEmail = (email) => {
 
       if (user) resolve(true);
       else resolve(false);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+const hashUserPassword = (password) => {
+  return new Promise(async (resolve, reject) => {
+    const hashPassword = bcrypt.hashSync(password, salt);
+    resolve(hashPassword);
+    try {
     } catch (error) {
       reject(error);
     }
