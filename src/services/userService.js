@@ -83,24 +83,26 @@ const userService = {
         if (check === true) {
           resolve({
             errorCode: 1,
-            message: "Your email is already in used. Please try another email!",
+            errorMessage:
+              "Your email is already in used. Please try another email!",
+          });
+        } else {
+          const hashPasswordFromBcrypt = await hashUserPassword(data.password);
+          await db.User.create({
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            password: hashPasswordFromBcrypt,
+            address: data.address,
+            phoneNumber: data.phoneNumber,
+            gender: data.gender === 1 ? true : false,
+            roleId: data.role,
+          });
+          resolve({
+            errorCode: 0,
+            message: "OK",
           });
         }
-        const hashPasswordFromBcrypt = await hashUserPassword(data.password);
-        await db.User.create({
-          firstName: data.firstName,
-          lastName: data.lastName,
-          email: data.email,
-          password: hashPasswordFromBcrypt,
-          address: data.address,
-          phoneNumber: data.phoneNumber,
-          gender: data.gender === 1 ? true : false,
-          roleId: data.role,
-        });
-        resolve({
-          errorCode: 0,
-          message: "OK",
-        });
       } catch (error) {
         reject(error);
       }
@@ -118,15 +120,16 @@ const userService = {
           errorCode: 2,
           errorMessage: `The user isn't exist!`,
         });
+      else {
+        await db.User.destroy({
+          where: { id: userId },
+        });
 
-      await db.User.destroy({
-        where: { id: userId },
-      });
-
-      resolve({
-        errorCode: 0,
-        message: "Deleted",
-      });
+        resolve({
+          errorCode: 0,
+          message: "Deleted",
+        });
+      }
     });
   },
 
