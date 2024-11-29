@@ -27,6 +27,7 @@ const initWebRoutes = (app) => {
   route.post("/api/create-new-user", userController.handleCreateNewUser);
   route.put("/api/edit-user", userController.handleEditUser);
   route.delete("/api/delete-user", userController.handleDeleteUser);
+  route.get("/api/all-code", userController.getAllCode);
 
   return app.use("/", route);
 };

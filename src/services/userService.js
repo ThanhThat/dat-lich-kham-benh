@@ -174,6 +174,32 @@ const userService = {
       }
     });
   },
+
+  getAllCodeService: (typeInput) => {
+    return new Promise(async (resolve, reject) => {
+      if (!typeInput) {
+        resolve({
+          errorCode: 1,
+          errorMessage: "Missing required parameters!",
+        });
+      } else {
+        try {
+          const allCode = await db.AllCode.findAll({
+            where: { type: typeInput },
+          });
+
+          const response = {
+            errorCode: 0,
+            data: allCode,
+          };
+
+          resolve(response);
+        } catch (error) {
+          reject(e);
+        }
+      }
+    });
+  },
 };
 
 const compareUserPassword = (password) => {

@@ -63,6 +63,19 @@ const userController = {
 
     return res.status(200).json(message);
   },
+
+  getAllCode: async (req, res) => {
+    try {
+      const data = await userService.getAllCodeService(req.query.type);
+      return res.status(200).json(data);
+    } catch (error) {
+      console.log("Get all code error: ", error);
+      return res.status(200).json({
+        errorCode: -1,
+        errorMessage: "Error from server",
+      });
+    }
+  },
 };
 
 export default userController;
