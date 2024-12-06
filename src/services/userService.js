@@ -101,8 +101,9 @@ const userService = {
             password: hashPasswordFromBcrypt,
             address: data.address,
             phoneNumber: data.phoneNumber,
-            gender: data.gender === 1 ? true : false,
-            roleId: data.role,
+            gender: data.gender,
+            roleId: data.roleId,
+            positionId: data.positionId,
           });
           resolve({
             errorCode: 0,
