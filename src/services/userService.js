@@ -143,7 +143,12 @@ const userService = {
   updateUserData: (userData) => {
     return new Promise(async (resolve, reject) => {
       try {
-        if (!userData.id) {
+        if (
+          !userData.id ||
+          !userData.roleId ||
+          !userData.positionId ||
+          !userData.gender
+        ) {
           resolve({
             errorCode: 2,
             errorMessage: "Missing required parameters!",
@@ -160,6 +165,10 @@ const userService = {
               firstName: userData.firstName,
               lastName: userData.lastName,
               address: userData.address,
+              phoneNumber: userData.phoneNumber,
+              roleId: userData.roleId,
+              positionId: userData.positionId,
+              gender: userData.gender,
             },
             {
               where: { id: userData.id },
