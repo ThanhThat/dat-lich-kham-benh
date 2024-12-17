@@ -5,6 +5,11 @@ const sequelize = new Sequelize("dat_lich_kham_benh", "root", null, {
   host: "localhost",
   dialect: "mysql",
   logging: false,
+
+  dialectOptions: {
+    // Thiết lập maxAllowedPacket
+    maxAllowedPacket: 64 * 1024 * 1024, // 64MB
+  },
 });
 
 const connectDB = async () => {

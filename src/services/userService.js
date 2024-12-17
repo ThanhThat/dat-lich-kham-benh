@@ -104,6 +104,7 @@ const userService = {
             gender: data.gender,
             roleId: data.roleId,
             positionId: data.positionId,
+            image: data.avatar,
           });
           resolve({
             errorCode: 0,
@@ -111,7 +112,7 @@ const userService = {
           });
         }
       } catch (error) {
-        reject(error);
+        reject(error.message);
       }
     });
   },
@@ -169,6 +170,7 @@ const userService = {
               roleId: userData.roleId,
               positionId: userData.positionId,
               gender: userData.gender,
+              image: userData.avatar,
             },
             {
               where: { id: userData.id },
