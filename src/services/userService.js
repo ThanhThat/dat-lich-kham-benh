@@ -170,7 +170,7 @@ const userService = {
               roleId: userData.roleId,
               positionId: userData.positionId,
               gender: userData.gender,
-              image: userData.avatar,
+              image: userData.avatar ? userData.avatar : user.image,
             },
             {
               where: { id: userData.id },

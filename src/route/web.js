@@ -9,6 +9,7 @@ import {
   deleteCRUD,
 } from "../controller/homeController";
 import userController from "../controller/userController";
+import doctorController from "../controller/doctorController";
 
 const route = express.Router();
 
@@ -28,6 +29,7 @@ const initWebRoutes = (app) => {
   route.put("/api/edit-user", userController.handleEditUser);
   route.delete("/api/delete-user", userController.handleDeleteUser);
   route.get("/api/all-code", userController.getAllCode);
+  route.get("/api/top-doctor-home", doctorController.getTopDoctorHome);
 
   return app.use("/", route);
 };
